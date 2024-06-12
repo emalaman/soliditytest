@@ -42,6 +42,11 @@ contract Auction{
         _;
     }
 
+    modifier onlyOwner(){
+        require(msg.sender == owner);
+        _;
+    }
+
     function min(uint a, uint b) pure internal returns(uint) {
         if (a <=b){
             return a;
@@ -50,6 +55,10 @@ contract Auction{
         {
             return b;
         }
+    }
+
+    function cancelAuction() public onlyOwner{
+        auctionState = State.Canceled;
     }
 
     function placeBid() public payable notOwner afterStart beforeEnd {
